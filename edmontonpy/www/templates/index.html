@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load tz %}
 
 {% load static %}
 
@@ -27,7 +28,7 @@
   <div class="container">
     <div class="row text-center">
       <div class="col">
-        <h1 class="text-white">Next Meetup: {% if object %}{{ object.date_time }}{% else %}To Be Announced{% endif %}</h1>
+        <h1 class="text-white">Next Meetup: {% if object %}{% timezone "America/Edmonton" %}{{ object.date_time }}{% endtimezone %}{% else %}To Be Announced{% endif %}</h1>
       </div>
     </div>
   </div>
@@ -79,26 +80,41 @@
   <div class="row d-flex justify-content-center p-4">
 
     <div class="col-12 shadow">
-      <div class="row p-3">
-        <div class="col-12 col-md-4 text-center text-light">
-          <h4 class="text-dark">Where we meet:</h4>
-          <address>
-            <strong><a href="https://www.startupedmonton.com/">Startup Edmonton</a></strong>
-            <a href="https://goo.gl/maps/4GMxptb4zb32">
-              <br>
-              10359 104 Sy N.W. #301,
-              <br>
-              Edmonton, AB T5J 1B9
-            </a>
-          </address>
-        </div>
-
-        <div class="col-12 col-md-8">
-          <div class="map embed-responsive embed-responsive-16by9">
-            <iframe class="embed-responsive-item" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2370.6658141068915!2d-113.50124168415402!3d53.54588098002133!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x53a022493dc36ccb%3A0x39a254126e46b1f1!2sStartup+Edmonton!5e0!3m2!1sen!2sca!4v1546050827861" frameborder="0" allowfullscreen></iframe>
+        {% if object.is_virtual %}
+          <div class="p-3 col text-center">
+            <h1>
+              Next meet up will be hosted virtually
+            </h1>
+            <h1>
+              <a href="{{ object.url }}">
+                <span class="btn btn-primary btn-lg">
+                  <i class="fas fa-users"></i> Join
+                </span>
+              </a>
+            </h1>
           </div>
-        </div>
-      </div>
+        {% else %}
+          <div class="row p-3">
+            <div class="col-12 col-md-4 text-center text-light">
+              <h4 class="text-dark">Where we meet:</h4>
+              <address>
+                <strong><a href="https://www.startupedmonton.com/">Startup Edmonton</a></strong>
+                <a href="https://goo.gl/maps/4GMxptb4zb32">
+                  <br>
+                  10359 104 Sy N.W. #301,
+                  <br>
+                  Edmonton, AB T5J 1B9
+                </a>
+              </address>
+            </div>
+
+            <div class="col-12 col-md-8">
+              <div class="map embed-responsive embed-responsive-16by9">
+                <iframe class="embed-responsive-item" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2370.6658141068915!2d-113.50124168415402!3d53.54588098002133!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x53a022493dc36ccb%3A0x39a254126e46b1f1!2sStartup+Edmonton!5e0!3m2!1sen!2sca!4v1546050827861" frameborder="0" allowfullscreen></iframe>
+              </div>
+            </div>
+          </div>
+        {% endif %}
     </div>
 
   </div>
@@ -111,13 +127,13 @@
         <h4 class="text-muted">Sponsors</h4>
       </div>
       <div class="row d-flex justify-content-around mx-2">
-        <div class="col col-md-2 my-auto">
+        <div class="col col-md-2 my-auto py-3">
           <a href="https://www.startupedmonton.com/"><img class="d-block mx-auto sponsor-logo" src="{% static 'imgs/sponsors/startup-edmonton.png' %}" alt="NAIT Logo"></a>
         </div>
-        <div class="col col-md-2 my-auto">
+        <div class="col col-md-2 my-auto py-3">
           <a href="https://www.theorganicbox.ca/"><img class="d-block mx-auto sponsor-logo" src="{% static 'imgs/sponsors/the-organic-box.jpg' %}" alt="The Organic Box Logo"></a>
         </div>
-        <div class="col col-md-2 my-auto">
+        <div class="col col-md-2 my-auto py-3">
           <a href="https://liftinteractive.com/"><img class="d-block mx-auto sponsor-logo" src="{% static 'imgs/sponsors/lift-interactive.png' %}" alt="Lift Interactive Logo"></a>
         </div>
       </div>

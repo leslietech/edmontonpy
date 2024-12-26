@@ -1,5 +1,7 @@
 from datetime import datetime
 
+import pytz
+
 from edmontonpy.core.models.dals import (
     MeetupDAL, PresentationDAL, PresenterDAL, SponsorDAL)
 from edmontonpy.core.models.objects import (
@@ -12,10 +14,19 @@ class TestMeetup(ModelTest):
     SUB_CLASSES = (MeetupDAL, )
 
     def setUp(self):
-        self.date_time = datetime(2018, 12, 29, 22, 30, 15, 400000)
+        self.date_time = datetime(2018, 12, 29, 22, 30, 15, 400000,
+                                  tzinfo=pytz.timezone('America/Edmonton'))
         self.model = self.MODEL_CLASS(
-            date_time=self.date_time
+            date_time=self.date_time,
+            url='',
         )
+
+    def test_is_virtual_false(self):
+        self.assertFalse(self.model.is_virtual)
+
+    def test_is_virtual_true(self):
+        self.model.url = 'http://edmontonpy.com/'
+        self.assertTrue(self.model.is_virtual)
 
     def test_str(self):
         self.assertEqual(
